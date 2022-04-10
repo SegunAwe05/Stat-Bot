@@ -1,4 +1,6 @@
 # Stat-Bot
+Final Project for INST 326 <br/>
+Twitter bot @StatBotNBA <br/>
 
 # Pre Req
 Before you can run this program isntall: <br/>
