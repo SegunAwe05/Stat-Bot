@@ -137,4 +137,3 @@ def get_player_stats(api_response):
     avg_to = turnovers / game_count
     
     return round(avg_ppg), round(avg_reb, 1), round(avg_ast), round(avg_steal), round(avg_blocks, 1), round(avg_to)
-
