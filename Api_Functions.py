@@ -12,6 +12,7 @@ def get_player_id(first_name, last_name):
         last_name (str): Player last name
     Returns:
         the player id in string Ex "124"
+         
     """
     
     url = "https://api-nba-v1.p.rapidapi.com/players"
@@ -24,7 +25,8 @@ def get_player_id(first_name, last_name):
 
     response = requests.request("GET", url, headers=headers, params=querystring)
     data = json.loads(response.text)
-
+    
+    player_dict = dict()
     for key, val in data.items():
         if key == "response":
             # val is has become a list
@@ -32,12 +34,15 @@ def get_player_id(first_name, last_name):
                 for item, item_data in index.items():
                     if first_name == item_data:
                         player_dict = dict(index)
-                        
-
-    for key, val in player_dict.items():
-        if key == "id":
-            player_id = val
-    return player_id
+                        break
+    
+    if player_dict:
+        for key, val in player_dict.items():
+            if key == "id":
+                player_id = val
+        return str(player_id)
+    else:
+        return "error unable to find player"
     
 
 def stat_api(id, year):
@@ -130,6 +135,6 @@ def get_player_stats(api_response):
     avg_ast = ast / game_count
     avg_blocks = blocks / game_count
     avg_to = turnovers / game_count
+    
     return round(avg_ppg), round(avg_reb, 1), round(avg_ast), round(avg_steal), round(avg_blocks, 1), round(avg_to)
-   
-  
+
