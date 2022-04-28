@@ -4,8 +4,8 @@ import tweepy
 
 API_KEY = "whSRUcAWngOzMjx2beMHyrJhJ"
 API_SECRET_KEY ="IJGUVjQwyR2YJXleoy8aKsOKtAcwlGGnGGopPpjEfvjWMo6al7"
-ACCESS_TOKEN = "1513247611700105216-IpapgBnzauL0Higtu8yINxCVdP1fXc"
-ACCESS_SECRET_TOKEN = "DuhYHNb5wfB2eUZMrqjITyVnIYMF4l24ENwUJIPWAVrXk"
+ACCESS_TOKEN = "1513247611700105216-jOsTHYpVGhhsnQbClPdwnVzG2RTHL9"
+ACCESS_SECRET_TOKEN = "vq0GK7l6VOtVygirmmWZfiYFTcZoZfdK0LBQgMVz9hfBT"
 
 auth = tweepy.OAuthHandler(API_KEY, API_SECRET_KEY)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET_TOKEN)
@@ -77,10 +77,11 @@ def main():
     """
 
     mentions = tweepy_api.mentions_timeline(tweet_mode = "exteneded")
-    for mention in reversed(mentions):
-        #player_info = parse_mention()
-        #player_info = Player()
-        tweepy_api.update_status("@" + mention.user.screen_name, mention.id)
+    while mentions > 0:
+        for mention in reversed(mentions):
+            player_info = parse_mention()
+            player_info = Player()
+            tweepy_api.update_status("@" + mention.user.screen_name + player_info, mention.id)
 
 
 
