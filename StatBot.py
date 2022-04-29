@@ -76,17 +76,19 @@ def main():
     the stats of the player.
     """
 
-    mentions = tweepy_api.mentions_timeline(tweet_mode = "exteneded")
-    while mentions > 0:
-        for mention in reversed(mentions):
-            player_info = parse_mention()
-            player_info = Player()
-            tweepy_api.update_status("@" + mention.user.screen_name + player_info, mention.id)
+    mentions = tweepy_api.mentions_timeline(count = 1, tweet_mode = "exteneded")
+    # while mentions:
+    for mention in reversed(mentions):
+            print(mention.text)
+            # player_info = parse_mention(mention.text)
+            # api.get_player_id()
+            # player_info = Player()
+            # tweepy_api.update_status("@" + mention.user.screen_name + player_info, mention.id)
 
 
 
     
-    pass
+    
 
 if __name__ == "__main__":
  
