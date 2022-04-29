@@ -1,6 +1,7 @@
 
 import Api_Functions as api
 import tweepy
+import time
 
 API_KEY = "whSRUcAWngOzMjx2beMHyrJhJ"
 API_SECRET_KEY ="IJGUVjQwyR2YJXleoy8aKsOKtAcwlGGnGGopPpjEfvjWMo6al7"
@@ -76,21 +77,35 @@ def main():
     the stats of the player.
     """
 
-    mentions = tweepy_api.mentions_timeline(count = 1, tweet_mode = "exteneded")
-    # while mentions:
+    bot_id = "1513247611700105216"
+    mention_id = 1
+    message = "Testing reply 3 @{}"
+
+    mentions = tweepy_api.mentions_timeline(count = 1, since_id = mention_id)
     for mention in reversed(mentions):
-            print(mention.text)
-            # player_info = parse_mention(mention.text)
-            # api.get_player_id()
-            # player_info = Player()
-            # tweepy_api.update_status("@" + mention.user.screen_name + player_info, mention.id)
-
-
-
-    
-    
+        print("Mention Tweet Found")
+        print(f"{mention.author.screen_name} - {mention.text}")
+        mention_id = mention.id
+        # add parse tweet function here. use mention.text in the param
+        # api.get_player_id() - this function gets player id. insert the player fname and lname to params
+        # player = Player() - fill the params as neccesary 
+        if mention.in_reply_to_status_id is None and mention.author.id != bot_id:
+            try:
+                print("Attempting Reply...")
+                # tweet the player stats back to the requesting user.
+                tweepy_api.update_status(message.format(mention.author.screen_name), in_reply_to_status_id = mention.id_str)
+                print("Successfully replied")
+            except Exception as exc:
+                print(exc)
+        
+    time.sleep(15)
 
 if __name__ == "__main__":
  
     main()
+
+
+
+
+
 
