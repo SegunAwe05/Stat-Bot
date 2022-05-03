@@ -81,7 +81,7 @@ bot_id = "1513247611700105216"
 mention_id = 1
 message = "Testing Like/Reply @{}"
 
-mentions = tweepy_api.mentions_timeline( since_id = mention_id)
+mentions = tweepy_api.mentions_timeline(count = 1, since_id = mention_id)
 for mention in reversed(mentions):
     print("Mention Tweet Found")
     print(f"{mention.author.screen_name} - {mention.text}")
