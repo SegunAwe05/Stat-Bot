@@ -1,7 +1,7 @@
 
 import Api_Functions as api
 import tweepy
-import time
+
 
 API_KEY = "whSRUcAWngOzMjx2beMHyrJhJ"
 API_SECRET_KEY ="IJGUVjQwyR2YJXleoy8aKsOKtAcwlGGnGGopPpjEfvjWMo6al7"
@@ -79,9 +79,9 @@ def main():
 
 bot_id = "1513247611700105216"
 mention_id = 1
-message = "Testing Like/Reply @{}"
+message = "Testing Like/Reply @{}" # This will need to be changed in the lines below to reply with the player info
 
-mentions = tweepy_api.mentions_timeline(count = 1, since_id = mention_id)
+mentions = tweepy_api.mentions_timeline(count = 1, since_id = mention_id) # If 2 people tweet, count = 1 will only reply/like one of them
 for mention in reversed(mentions):
     print("Mention Tweet Found")
     print(f"{mention.author.screen_name} - {mention.text}")
