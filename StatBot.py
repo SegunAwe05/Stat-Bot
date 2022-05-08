@@ -104,7 +104,6 @@ for mention in reversed(mentions):
             print(exc)
 
 if __name__ == "__main__":
- 
     main()
 
 
