@@ -1,6 +1,9 @@
 # unit test for stat bot
 
 import Api_Functions as api
+import StatBot as sb
+import tweepy
+
 
 
 # example of correct spelling format
@@ -25,3 +28,13 @@ assert response.status_code == 200
 
 #Lebron James reb per game from 2020 = 7.2
 assert api.get_player_stats(response)[1] == 7.2
+
+#More than 0 mentioned tweets
+mentions = tweepy.mentions_timeline()
+assert mentions > 0
+print(len(mentions) + " number of mentioned tweets")
+
+#No mentioned tweets
+mentions = tweepy.mentions_timeline()
+assert mentions == 0, "There are no mentioned tweets"
+
