@@ -35,8 +35,7 @@ class Player:
         self.first_name = fname
         self.last_name = lname
         self.year = year
-        
-        
+    
         response = api.stat_api(player_id, self.year)
         player_stats = api.get_player_stats(response)
         
@@ -48,8 +47,6 @@ class Player:
         self.avg_to = player_stats [5]
         
         
-        
-
 def parse_mention(tweet):
     """
     parse the mention request from the user
@@ -60,11 +57,8 @@ def parse_mention(tweet):
     Returns:
         retrun the player first name, last name, and year 
         (year will be a string)
-    
     """
-    
     player_name = re.findall("[A-Z][a-z]+\s[A-Z][a-z]+", tweet)
-  
     name_string = player_name[0]
     name_list = name_string.split()
     fname = name_list[0]
@@ -79,31 +73,24 @@ def parse_mention(tweet):
 
 def main():
     """
-    in this function we want to have a infitie while loop 
-    so the bot is running while the program is running.
-    We then want to iterite throught the account mentions 
-    if its greater than 0.
-    For each mention which will be a request from another account
-    we want to read their request, parse it to get the information we need, 
-    pass the information into the player object, then tweet back
-    the stats of the player.
+    main driver of the code that initlizies the player class
+    grabs the mention tweet and parses it
+    tweets back information to the user
     """
 
 bot_id = "1513247611700105216"
 mention_id = 1
-
 
 mentions = tweepy_api.mentions_timeline(count = 1, since_id = mention_id) # If 2 people tweet, count = 1 will only reply/like one of them
 for mention in reversed(mentions):
     print("Mention Tweet Found")
     print(f"{mention.author.screen_name} - {mention.text}")
     mention_id = mention.id
-    # add parse tweet function here. use mention.text in the param
-    fname = parse_mention(mention.text)[0]
-    lname = parse_mention(mention.text)[1]
-    year = parse_mention(mention.text)[2]
-    # api.get_player_id() - this function gets player id. insert the player fname and lname to params
+  
+    # call functions
+    fname, lname, year = parse_mention(mention.text)
     player_id = api.get_player_id(fname, lname)
+  
     if player_id == "error unable to find player":
         message = f"unable to find player check request for typos @{mention.author.screen_name}"
         tweepy_api.update_status(message, in_reply_to_status_id = mention.id_str)
@@ -131,7 +118,6 @@ for mention in reversed(mentions):
             print(exc)
 
 if __name__ == "__main__":
- 
     main()
 
 

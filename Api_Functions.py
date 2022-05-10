@@ -56,7 +56,6 @@ def stat_api(id, year):
         response - All the data from the API call
     """
     
-
     url = "https://api-nba-v1.p.rapidapi.com/players/statistics"
     querystring = {"id":id,"season":year}
 
@@ -128,7 +127,7 @@ def get_player_stats(api_response):
                             turnovers += data
                         game_count += 1    
 
-    print(game_count)              
+              
     avg_ppg = points / game_count
     avg_reb = reb / game_count
     avg_steal = steal / game_count

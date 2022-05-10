@@ -4,8 +4,6 @@ import Api_Functions as api
 import StatBot as sb
 import tweepy
 
-
-
 # example of correct spelling format
 assert api.get_player_id("LeBron", "james") == "265"
 assert api.get_player_id("Stephen", "Curry") == "124"
@@ -38,3 +36,8 @@ print(len(mentions) + " number of mentioned tweets")
 mentions = tweepy.mentions_timeline()
 assert mentions == 0, "There are no mentioned tweets"
 
+# testing if names are parsed
+tweet = "Kevin Durant 2021"
+assert sb.parse_mention(tweet)[0] == "Kevin"
+assert sb.parse_mention(tweet)[1] == "Durant"
+assert sb.parse_mention(tweet)[2] == "2020"
