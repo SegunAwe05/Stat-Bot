@@ -1,7 +1,7 @@
 
 import Api_Functions as api
 import tweepy
-
+import re
 
 API_KEY = "whSRUcAWngOzMjx2beMHyrJhJ"
 API_SECRET_KEY ="IJGUVjQwyR2YJXleoy8aKsOKtAcwlGGnGGopPpjEfvjWMo6al7"
@@ -62,9 +62,10 @@ def parse_mention(tweet):
         (year will be a string)
     
     """
-    # segub was here
-    pass
-    
+    for i in tweet:
+        playername = re.findall("[A-Z][a-z]+\s[A-Z][a-z]+", tweet)
+        year = re.findall("\+d" , tweet)
+    return playername[0], year[0]
 
 
 def main():
@@ -106,6 +107,7 @@ for mention in reversed(mentions):
             print(exc)
 
 if __name__ == "__main__":
+ 
     main()
 
 
