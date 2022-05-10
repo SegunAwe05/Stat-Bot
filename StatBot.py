@@ -62,10 +62,19 @@ def parse_mention(tweet):
         (year will be a string)
     
     """
-    for i in tweet:
-        playername = re.findall("[A-Z][a-z]+\s[A-Z][a-z]+", tweet)
-        year = re.findall("\+d" , tweet)
-    return playername[0], year[0]
+    
+    player_name = re.findall("[A-Z][a-z]+\s[A-Z][a-z]+", tweet)
+  
+    name_string = player_name[0]
+    name_list = name_string.split()
+    fname = name_list[0]
+    lname = name_list[1]
+    year = re.findall("\d+", tweet)
+    
+    if fname == "Bron":
+        fname = "LeBron"
+
+    return fname, lname, year[0]
 
 
 def main():
@@ -82,7 +91,7 @@ def main():
 
 bot_id = "1513247611700105216"
 mention_id = 1
-message = "Testing Like/Reply @{}" # This will need to be changed in the lines below to reply with the player info
+
 
 mentions = tweepy_api.mentions_timeline(count = 1, since_id = mention_id) # If 2 people tweet, count = 1 will only reply/like one of them
 for mention in reversed(mentions):
@@ -90,14 +99,29 @@ for mention in reversed(mentions):
     print(f"{mention.author.screen_name} - {mention.text}")
     mention_id = mention.id
     # add parse tweet function here. use mention.text in the param
+    fname = parse_mention(mention.text)[0]
+    lname = parse_mention(mention.text)[1]
+    year = parse_mention(mention.text)[2]
     # api.get_player_id() - this function gets player id. insert the player fname and lname to params
-    # player = Player() - fill the params as neccesary 
+    player_id = api.get_player_id(fname, lname)
+    if player_id == "error unable to find player":
+        message = f"unable to find player check request for typos @{mention.author.screen_name}"
+        tweepy_api.update_status(message, in_reply_to_status_id = mention.id_str)
+        print("unable to find player exiting code")
+        exit()
+    else:
+        player = Player(fname, lname, year, player_id)
+        message = (f"{player.first_name} {player.last_name} averaged {player.avg_pgg} PPG, " 
+                    f"{player.avg_ast} AST, {player.avg_reb} REB, {player.avg_blocks} BLKS, " 
+                    f"{player.avg_steal} STL, and {player.avg_to} TO in {year} "
+                    f"@{mention.author.screen_name}")
+   
     if mention.in_reply_to_status_id is None and mention.author.id != bot_id:
         try:
             print("Attempting Reply...")
             print("Attempting Like...")
             # tweet the player stats back to the requesting user.
-            tweepy_api.update_status(message.format(mention.author.screen_name), in_reply_to_status_id = mention.id_str)
+            tweepy_api.update_status(message, in_reply_to_status_id = mention.id_str)
             tweepy_api.create_favorite(mention.id)
             print("Successfully replied")
             print("Successfully liked")
